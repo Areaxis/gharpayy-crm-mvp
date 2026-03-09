@@ -12,8 +12,10 @@ export const scheduleVisit = async (req, res) => {
     const lead = await Lead.findById(req.body.leadId);
 
     lead.activity.push({
-      action: "Visit scheduled"
+      action: `Visit outcome: ${req.body.outcome || "Scheduled"}`
     });
+
+    lead.lastActivity = new Date();
 
     await lead.save();
 
