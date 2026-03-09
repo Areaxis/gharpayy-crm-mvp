@@ -20,13 +20,22 @@ export default function Dashboard(){
 
   return(
 
-    <div>
+    <div className="grid grid-cols-3 gap-4">
 
-      <h1>CRM Dashboard</h1>
+      <div className="bg-white shadow rounded p-4">
+        <h3 className="text-gray-500">Total Leads</h3>
+        <p className="text-2xl font-bold">{stats.totalLeads}</p>
+      </div>
 
-      <p>Total Leads: {stats.totalLeads}</p>
-      <p>Visits Scheduled: {stats.visits}</p>
-      <p>Bookings: {stats.booked}</p>
+      <div className="bg-white shadow rounded p-4">
+        <h3 className="text-gray-500">Visits Scheduled</h3>
+        <p className="text-2xl font-bold">{stats.visits}</p>
+      </div>
+
+      <div className="bg-white shadow rounded p-4">
+        <h3 className="text-gray-500">Conversion Rate</h3>
+        <p className="text-2xl font-bold">{stats.conversionRate}%</p>
+      </div>
 
     </div>
 

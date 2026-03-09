@@ -33,7 +33,7 @@ export default function LeadsPage(){
 
       <LeadForm refresh={loadLeads} />
 
-      <div style={{display:"flex",gap:"20px"}}>
+      <div className="flex gap-4 overflow-x-auto p-4">
 
         {stages.map(stage=>{
 
