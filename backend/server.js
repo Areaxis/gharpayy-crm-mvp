@@ -7,10 +7,12 @@ import leadRoutes from "./routes/lead.routes.js";
 import visitRoutes from "./routes/visit.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import agentRoutes from "./routes/agent.routes.js";
+import startReminderService from "./services/reminder.service.js";
 
 const app = express();
 
 connectDB();
+startReminderService();
 
 app.use(cors());
 app.use(express.json());
