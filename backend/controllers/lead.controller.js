@@ -58,8 +58,10 @@ export const updateLeadStatus = async (req, res) => {
 
     lead.status = req.body.status;
 
+    lead.lastActivity = new Date();
+
     lead.activity.push({
-      action: `Status changed to ${req.body.status}`
+        action: `Status changed to ${req.body.status}`
     });
 
     await lead.save();
@@ -84,6 +86,28 @@ export const getLeadTimeline = async (req, res) => {
       .lean();
 
     res.json(lead.activity);
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+
+};
+
+export const getFollowUps = async (req, res) => {
+
+  try {
+
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+
+    const leads = await Lead.find({
+      lastActivity: { $lt: new Date(Date.now() - ONE_DAY) }
+    })
+    .populate("assignedAgent", "name")
+    .lean();
+
+    res.json(leads);
 
   } catch (error) {
 
