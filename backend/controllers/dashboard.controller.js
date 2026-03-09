@@ -1,4 +1,5 @@
 import Lead from "../models/lead.model.js";
+import Agent from "../models/agent.model.js";
 
 export const getDashboardStats = async (req, res) => {
 
@@ -14,13 +15,12 @@ export const getDashboardStats = async (req, res) => {
       status: "Booked"
     });
 
-    // conversion rate calculation
     const conversionRate =
       totalLeads === 0
         ? 0
         : ((booked / totalLeads) * 100).toFixed(2);
 
-    // fetch activity
+    // recent activity
     const leads = await Lead.find()
       .select("name activity")
       .lean();
@@ -47,12 +47,45 @@ export const getDashboardStats = async (req, res) => {
 
     const recentActivity = activity.slice(0, 10);
 
+    // agent leaderboard
+    const leaderboard = await Lead.aggregate([
+      {
+        $group: {
+          _id: "$assignedAgent",
+          totalLeads: { $sum: 1 },
+          bookings: {
+            $sum: {
+              $cond: [{ $eq: ["$status", "Booked"] }, 1, 0]
+            }
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: "agents",
+          localField: "_id",
+          foreignField: "_id",
+          as: "agent"
+        }
+      },
+      { $unwind: "$agent" },
+      {
+        $project: {
+          agentName: "$agent.name",
+          totalLeads: 1,
+          bookings: 1
+        }
+      },
+      { $sort: { bookings: -1 } }
+    ]);
+
     res.json({
       totalLeads,
       visits,
       booked,
       conversionRate,
-      recentActivity
+      recentActivity,
+      leaderboard
     });
 
   } catch (error) {
