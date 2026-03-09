@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { statusColor } from "../utils/statusColor";
+import { getInitials } from "../utils/getInitials";
 
 function PipelineColumn({ title, leads }) {
 
@@ -16,12 +17,25 @@ function PipelineColumn({ title, leads }) {
           className="bg-white rounded-md shadow p-3 mb-3"
         >
 
-          <div className="font-semibold">
-            {lead.name}
-          </div>
+          <div className="flex items-center gap-3">
 
-          <div className="text-sm text-gray-600">
-            {lead.phone}
+            {/* Avatar */}
+            <div className="w-8 h-8 rounded-full bg-gray-700 text-white flex items-center justify-center text-sm font-bold">
+              {getInitials(lead.name)}
+            </div>
+
+            <div>
+
+              <div className="font-semibold">
+                {lead.name}
+              </div>
+
+              <div className="text-sm text-gray-600">
+                {lead.phone}
+              </div>
+
+            </div>
+
           </div>
 
           <span
