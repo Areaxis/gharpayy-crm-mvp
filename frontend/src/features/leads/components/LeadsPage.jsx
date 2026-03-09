@@ -1,41 +1,60 @@
-import { useEffect, useState } from "react";
-import { getLeads } from "./api/getLeads";
+import { useEffect,useState } from "react";
+import { getLeads } from "../api/getLeads";
+import PipelineColumn from "../../../components/PipelineColumn";
 import LeadForm from "./LeadForm";
 
-export default function LeadsPage() {
+const stages = [
+  "New Lead",
+  "Contacted",
+  "Requirement Collected",
+  "Property Suggested",
+  "Visit Scheduled",
+  "Visit Completed",
+  "Booked",
+  "Lost"
+];
 
-  const [leads, setLeads] = useState([]);
+export default function LeadsPage(){
 
-  useEffect(() => {
+  const [leads,setLeads] = useState([]);
 
-    const load = async () => {
-      const data = await getLeads();
-      setLeads(data);
-    };
+  const loadLeads = async () => {
+    const data = await getLeads();
+    setLeads(data);
+  };
 
-    load();
-
-  }, []);
+  useEffect(()=>{
+    loadLeads();
+  },[]);
 
   return (
 
     <div>
 
-      <h1>Leads Pipeline</h1>
+      <LeadForm refresh={loadLeads} />
 
-      <LeadForm />
+      <div style={{display:"flex",gap:"20px"}}>
 
-      {leads.map((lead) => (
-        <div key={lead._id}>
+        {stages.map(stage=>{
 
-          <h4>{lead.name}</h4>
-          <p>{lead.phone}</p>
-          <p>Status: {lead.status}</p>
+          const stageLeads = leads.filter(
+            lead => lead.status === stage
+          );
 
-        </div>
-      ))}
+          return(
+            <PipelineColumn
+              key={stage}
+              title={stage}
+              leads={stageLeads}
+            />
+          )
+
+        })}
+
+      </div>
 
     </div>
 
   );
+
 }

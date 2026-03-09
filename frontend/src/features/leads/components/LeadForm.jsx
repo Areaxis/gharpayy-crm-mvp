@@ -1,42 +1,60 @@
 import { useState } from "react";
 import { api } from "../../../config/api";
 
-export default function LeadForm() {
+export default function LeadForm({ refresh }) {
 
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name,setName] = useState("");
+  const [phone,setPhone] = useState("");
+  const [source,setSource] = useState("Website");
 
-  const submitLead = async () => {
+  const submitLead = async (e) => {
 
-    await api.post("/leads", {
+    e.preventDefault();
+
+    await api.post("/leads",{
       name,
       phone,
-      source: "Website"
+      source
     });
 
-    alert("Lead created");
+    setName("");
+    setPhone("");
+
+    refresh();
 
   };
 
   return (
-    <div>
 
-      <h2>Create Lead</h2>
+    <form onSubmit={submitLead}>
+
+      <h3>Create Lead</h3>
 
       <input
         placeholder="Name"
-        onChange={(e) => setName(e.target.value)}
+        value={name}
+        onChange={(e)=>setName(e.target.value)}
       />
 
       <input
         placeholder="Phone"
-        onChange={(e) => setPhone(e.target.value)}
+        value={phone}
+        onChange={(e)=>setPhone(e.target.value)}
       />
 
-      <button onClick={submitLead}>
-        Submit
-      </button>
+      <select
+        value={source}
+        onChange={(e)=>setSource(e.target.value)}
+      >
+        <option>Website</option>
+        <option>WhatsApp</option>
+        <option>Phone</option>
+      </select>
 
-    </div>
+      <button type="submit">Create Lead</button>
+
+    </form>
+
   );
+
 }
