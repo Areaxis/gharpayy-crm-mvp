@@ -34,20 +34,52 @@ export const createLead = async (req, res) => {
 };
 
 export const getLeads = async (req, res) => {
+
   try {
 
-    const leads = await Lead
-      .find()
+    const { status, agent, search, page = 1 } = req.query;
+
+    const limit = 10;
+    const query = {};
+
+    // filter by status
+    if (status) {
+      query.status = status;
+    }
+
+    // filter by agent
+    if (agent) {
+      query.assignedAgent = agent;
+    }
+
+    // search by name or phone
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { phone: { $regex: search, $options: "i" } }
+      ];
+    }
+
+    const leads = await Lead.find(query)
       .populate("assignedAgent", "name email")
+      .skip((page - 1) * limit)
+      .limit(limit)
       .lean();
 
-    res.json(leads);
+    const total = await Lead.countDocuments(query);
+
+    res.json({
+      page: Number(page),
+      total,
+      leads
+    });
 
   } catch (error) {
 
     res.status(500).json({ error: error.message });
 
   }
+
 };
 
 export const updateLeadStatus = async (req, res) => {
