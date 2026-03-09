@@ -14,14 +14,19 @@ export const getDashboardStats = async (req, res) => {
       status: "Booked"
     });
 
-    // fetch leads with activity
+    // conversion rate calculation
+    const conversionRate =
+      totalLeads === 0
+        ? 0
+        : ((booked / totalLeads) * 100).toFixed(2);
+
+    // fetch activity
     const leads = await Lead.find()
       .select("name activity")
       .lean();
 
     const activity = [];
 
-    // flatten all activity events
     for (const lead of leads) {
 
       for (const event of lead.activity) {
@@ -36,9 +41,8 @@ export const getDashboardStats = async (req, res) => {
 
     }
 
-    // sort newest first
-    activity.sort((a, b) =>
-      new Date(b.timestamp) - new Date(a.timestamp)
+    activity.sort(
+      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
     );
 
     const recentActivity = activity.slice(0, 10);
@@ -47,6 +51,7 @@ export const getDashboardStats = async (req, res) => {
       totalLeads,
       visits,
       booked,
+      conversionRate,
       recentActivity
     });
 
