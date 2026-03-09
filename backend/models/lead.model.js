@@ -26,6 +26,11 @@ const LeadSchema = new mongoose.Schema({
     ref: "Agent"
   },
 
+  lastActivity: {
+    type: Date,
+    default: Date.now
+  },
+
   activity: [
     {
       action: String,
