@@ -13,5 +13,6 @@ router.post("/", createLead);
 router.get("/", getLeads);
 router.patch("/:id", updateLeadStatus);
 router.get("/:id/timeline", getLeadTimeline);
+router.get("/followups", getFollowUps);
 
 export default router;
