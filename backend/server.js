@@ -1,35 +1,25 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const bodyParser = require("body-parser");
+import express from "express";
+import cors from "cors";
+
+import connectDB from "./config/db.js";
+
+import leadRoutes from "./routes/lead.routes.js";
+import visitRoutes from "./routes/visit.routes.js";
+import dashboardRoutes from "./routes/dashboard.routes.js";
+import agentRoutes from "./routes/agent.routes.js";
 
 const app = express();
 
-// Configuration
-const connectDB = require("./config/db");
 connectDB();
 
-// Middleware
 app.use(cors());
+app.use(express.json());
 
-// Body Parser Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/api/leads", leadRoutes);
+app.use("/api/visits", visitRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/agents", agentRoutes);
 
-// MongoDB connection
-mongoose.connect("mongodb://127.0.0.1:27017/gharpayyCRM", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB Connected"))
-.catch((err) => console.log(err));
-
-// Test route
-app.get("/", (req, res) => {
-  res.send("Gharpayy CRM API running");
-});
-
-// Start server
 app.listen(5000, () => {
   console.log("Server running on port 5000");
 });
