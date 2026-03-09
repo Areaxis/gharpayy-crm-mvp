@@ -3,7 +3,8 @@ import express from "express";
 import {
   createLead,
   getLeads,
-  updateLeadStatus
+  updateLeadStatus,
+  getLeadTimeline
 } from "../controllers/lead.controller.js";
 
 const router = express.Router();
@@ -11,5 +12,6 @@ const router = express.Router();
 router.post("/", createLead);
 router.get("/", getLeads);
 router.patch("/:id", updateLeadStatus);
+router.get("/:id/timeline", getLeadTimeline);
 
 export default router;
