@@ -3,22 +3,46 @@ import { api } from "../../../config/api";
 
 export default function LeadForm({ refresh }) {
 
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [source, setSource] = useState("Website");
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    moveInDate: "",
+    location: "",
+    inBlr: "",
+    gender: "",
+    occupation: "",
+    month: "",
+    score: "",
+    owner: ""
+  });
+
+  const update = (e) => {
+
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+
+  };
 
   const submitLead = async (e) => {
 
     e.preventDefault();
 
-    await api.post("/leads", {
-      name,
-      phone,
-      source
-    });
+    await api.post("/leads", form);
 
-    setName("");
-    setPhone("");
+    setForm({
+      name: "",
+      phone: "",
+      moveInDate: "",
+      location: "",
+      inBlr: "",
+      gender: "",
+      occupation: "",
+      month: "",
+      score: "",
+      owner: ""
+    });
 
     refresh();
 
@@ -26,7 +50,7 @@ export default function LeadForm({ refresh }) {
 
   return (
 
-    <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+    <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
 
       <h2 className="text-lg font-semibold text-gray-700 mb-4">
         Create Lead
@@ -34,69 +58,118 @@ export default function LeadForm({ refresh }) {
 
       <form
         onSubmit={submitLead}
-        className="grid md:grid-cols-4 gap-4 items-end"
+        className="grid md:grid-cols-2 gap-4"
       >
 
-        {/* Name */}
-        <div className="flex flex-col">
+        <input
+          name="name"
+          placeholder="Full Name"
+          value={form.name}
+          onChange={update}
+          className="input"
+        />
 
-          <label className="text-sm text-gray-500 mb-1">
-            Name
-          </label>
+        <input
+          name="phone"
+          placeholder="Mobile Number"
+          value={form.phone}
+          onChange={update}
+          className="input"
+        />
 
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Lead name"
-            className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
-            required
-          />
+        <input
+          type="date"
+          name="moveInDate"
+          value={form.moveInDate}
+          onChange={update}
+          className="input"
+        />
 
-        </div>
+        <input
+          name="location"
+          placeholder="Preferred Location"
+          value={form.location}
+          onChange={update}
+          className="input"
+        />
 
-        {/* Phone */}
-        <div className="flex flex-col">
+        <select
+          name="inBlr"
+          value={form.inBlr}
+          onChange={update}
+          className="input"
+        >
+          <option value="">BLR / Not in BLR</option>
+          <option value="Yes">Yes in BLR</option>
+          <option value="No">Not in BLR</option>
+        </select>
 
-          <label className="text-sm text-gray-500 mb-1">
-            Phone
-          </label>
+        <select
+          name="gender"
+          value={form.gender}
+          onChange={update}
+          className="input"
+        >
+          <option value="">Gender</option>
+          <option>Boys</option>
+          <option>Girls</option>
+          <option>Coliving</option>
+        </select>
 
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Phone number"
-            className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
-            required
-          />
+        <select
+          name="occupation"
+          value={form.occupation}
+          onChange={update}
+          className="input"
+        >
+          <option value="">Student / Working</option>
+          <option>Student</option>
+          <option>Working</option>
+          <option>Intern</option>
+        </select>
 
-        </div>
+        <select
+          name="month"
+          value={form.month}
+          onChange={update}
+          className="input"
+        >
+          <option value="">Preferred Month</option>
+          <option>January</option>
+          <option>February</option>
+          <option>March</option>
+          <option>April</option>
+          <option>May</option>
+          <option>June</option>
+          <option>July</option>
+          <option>August</option>
+          <option>September</option>
+          <option>October</option>
+          <option>November</option>
+          <option>December</option>
+        </select>
 
-        {/* Source */}
-        <div className="flex flex-col">
+        <input
+          type="number"
+          name="score"
+          min="1"
+          max="10"
+          placeholder="Lead Score (1-10)"
+          value={form.score}
+          onChange={update}
+          className="input"
+        />
 
-          <label className="text-sm text-gray-500 mb-1">
-            Source
-          </label>
+        <input
+          name="owner"
+          placeholder="Lead Owner"
+          value={form.owner}
+          onChange={update}
+          className="input"
+        />
 
-          <select
-            value={source}
-            onChange={(e) => setSource(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
-          >
-
-            <option>Website</option>
-            <option>WhatsApp</option>
-            <option>Phone</option>
-            <option>Walk-in</option>
-
-          </select>
-
-        </div>
-
-        {/* Button */}
         <button
-          type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition transform hover:scale-[1.02]"
+          className="col-span-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
         >
           Create Lead
         </button>
