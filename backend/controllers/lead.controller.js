@@ -5,13 +5,18 @@ export const createLead = async (req, res) => {
 
   try {
 
-    const agent = await Agent
-      .findOne()
-      .sort({ activeLeads: 1 });
+    const agent = await Agent.findOne().sort({ activeLeads: 1 });
+
+    if (!agent) {
+      return res.status(400).json({
+        error: "No agents available to assign lead"
+      });
+    }
 
     const lead = new Lead({
       ...req.body,
       assignedAgent: agent._id,
+      lastActivity: new Date(),   // ← improvement added here
       activity: [
         { action: "Lead created" },
         { action: `Assigned to ${agent.name}` }
@@ -42,17 +47,14 @@ export const getLeads = async (req, res) => {
     const limit = 10;
     const query = {};
 
-    // filter by status
     if (status) {
       query.status = status;
     }
 
-    // filter by agent
     if (agent) {
       query.assignedAgent = agent;
     }
 
-    // search by name or phone
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: "i" } },
@@ -88,12 +90,21 @@ export const updateLeadStatus = async (req, res) => {
 
     const lead = await Lead.findById(req.params.id);
 
-    lead.status = req.body.status;
+    if (!lead) {
+      return res.status(404).json({
+        error: "Lead not found"
+      });
+    }
 
+    lead.status = req.body.status;
     lead.lastActivity = new Date();
 
+    if (!lead.activity) {
+      lead.activity = [];
+    }
+
     lead.activity.push({
-        action: `Status changed to ${req.body.status}`
+      action: `Status changed to ${req.body.status}`
     });
 
     await lead.save();
@@ -117,7 +128,13 @@ export const getLeadTimeline = async (req, res) => {
       .select("activity")
       .lean();
 
-    res.json(lead.activity);
+    if (!lead) {
+      return res.status(404).json({
+        error: "Lead not found"
+      });
+    }
+
+    res.json(lead.activity || []);
 
   } catch (error) {
 
@@ -136,8 +153,8 @@ export const getFollowUps = async (req, res) => {
     const leads = await Lead.find({
       lastActivity: { $lt: new Date(Date.now() - ONE_DAY) }
     })
-    .populate("assignedAgent", "name")
-    .lean();
+      .populate("assignedAgent", "name")
+      .lean();
 
     res.json(leads);
 
