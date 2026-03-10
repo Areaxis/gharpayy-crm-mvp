@@ -4,7 +4,8 @@ import {
   createLead,
   getLeads,
   updateLeadStatus,
-  getLeadTimeline
+  getLeadTimeline,
+  getFollowUps
 } from "../controllers/lead.controller.js";
 
 const router = express.Router();
