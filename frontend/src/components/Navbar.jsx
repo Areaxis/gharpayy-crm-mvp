@@ -2,44 +2,46 @@ import { NavLink, Outlet } from "react-router-dom";
 
 export default function Navbar() {
 
-  const linkBase =
-    "px-4 py-2 rounded-md text-sm font-medium transition";
+  const base =
+    "px-3 py-1 rounded-md transition";
 
   const active =
-    "bg-white text-blue-700 shadow-sm";
+    "bg-white text-blue-600 font-medium";
 
   const inactive =
-    "text-white/90 hover:bg-white/20";
+    "text-white hover:bg-white/20";
 
   return (
 
-    <div className="min-h-screen bg-gray-50">
+    <div>
 
-      <nav className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 shadow-md">
+      <nav className="bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md">
 
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3 md:px-6">
 
           {/* Logo */}
-          <div className="flex items-center gap-2">
 
-            <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-white text-blue-600 text-lg font-bold tracking-wide shadow-sm logo-font">
+          <div className="flex items-center gap-2 text-white font-semibold">
+
+            <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center text-blue-600 font-bold">
               G
             </div>
 
-            <span className="text-white font-semibold text-lg tracking-wide">
+            <span className="text-sm md:text-lg">
               Gharpayy CRM
             </span>
 
           </div>
 
+
           {/* Navigation */}
-          <div className="flex gap-2">
+
+          <div className="flex gap-2 md:gap-4 text-sm md:text-base">
 
             <NavLink
               to="/"
-              end
               className={({ isActive }) =>
-                `${linkBase} ${isActive ? active : inactive}`
+                `${base} ${isActive ? active : inactive}`
               }
             >
               Dashboard
@@ -48,7 +50,7 @@ export default function Navbar() {
             <NavLink
               to="/leads"
               className={({ isActive }) =>
-                `${linkBase} ${isActive ? active : inactive}`
+                `${base} ${isActive ? active : inactive}`
               }
             >
               Leads
@@ -57,7 +59,7 @@ export default function Navbar() {
             <NavLink
               to="/visits"
               className={({ isActive }) =>
-                `${linkBase} ${isActive ? active : inactive}`
+                `${base} ${isActive ? active : inactive}`
               }
             >
               Visits
@@ -69,9 +71,7 @@ export default function Navbar() {
 
       </nav>
 
-      <main className="max-w-7xl mx-auto">
-        <Outlet />
-      </main>
+      <Outlet />
 
     </div>
 

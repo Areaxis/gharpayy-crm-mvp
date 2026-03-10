@@ -58,7 +58,7 @@ export default function LeadForm({ refresh }) {
 
       <form
         onSubmit={submitLead}
-        className="grid md:grid-cols-2 gap-4"
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
       >
 
         <input
@@ -169,7 +169,7 @@ export default function LeadForm({ refresh }) {
         />
 
         <button
-          className="col-span-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
+          className="md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
         >
           Create Lead
         </button>

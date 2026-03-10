@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
 
 import { api } from "../../../config/api";
 
@@ -63,17 +62,17 @@ export default function VisitScheduler() {
 
   return (
 
-    <div className="p-8 flex justify-center">
+    <div className="px-4 py-6 md:p-8 flex justify-center">
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-5xl w-full items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl w-full items-start">
 
-        {/* LEFT: PROPERTY PREVIEW */}
+        {/* PROPERTY PREVIEW CARD */}
 
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
 
-          <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 p-8 flex justify-center">
+          <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 py-6 md:p-8 flex justify-center">
 
-            <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center text-yellow-600">
+            <div className="w-20 h-20 md:w-24 md:h-24 bg-white rounded-lg flex items-center justify-center text-yellow-600">
               <HomeIcon fontSize="large" />
             </div>
 
@@ -81,7 +80,7 @@ export default function VisitScheduler() {
 
           <div className="p-6 space-y-4">
 
-            <h2 className="text-xl font-semibold text-gray-700">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-700">
               {property || "Gharpayy Property Visit"}
             </h2>
 
@@ -114,7 +113,7 @@ export default function VisitScheduler() {
         </div>
 
 
-        {/* RIGHT: BOOKING FORM */}
+        {/* BOOKING FORM */}
 
         <div className="bg-white rounded-xl shadow-sm p-6 space-y-4">
 
@@ -138,15 +137,15 @@ export default function VisitScheduler() {
             className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
           />
 
-          {/* Inline Calendar */}
-          <div className="w-full rounded-lg border border-gray-200 p-4 bg-gray-50 flex justify-center">
+          {/* CALENDAR */}
+
+          <div className="w-full rounded-lg border border-gray-200 p-3 md:p-4 bg-gray-50 flex justify-center overflow-x-auto">
             <Calendar
               onChange={setDate}
               value={date}
             />
           </div>
 
-          {/* Time selector */}
           <input
             type="time"
             value={time}
@@ -169,7 +168,7 @@ export default function VisitScheduler() {
 
           <button
             onClick={scheduleVisit}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition transform hover:scale-[1.02]"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition"
           >
             Confirm Visit
           </button>
