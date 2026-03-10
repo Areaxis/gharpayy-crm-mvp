@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { getLeads } from "../api/getLeads";
 import PipelineColumn from "../../../components/PipelineColumn";
 import LeadForm from "./LeadForm";
@@ -14,18 +14,22 @@ const stages = [
   "Lost"
 ];
 
-export default function LeadsPage(){
+export default function LeadsPage() {
 
-  const [leads,setLeads] = useState([]);
+  const [leads, setLeads] = useState([]);
 
   const loadLeads = async () => {
+
     const data = await getLeads();
-    setLeads(data);
+
+    // backend returns { page, total, leads }
+    setLeads(data.leads || []);
+
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     loadLeads();
-  },[]);
+  }, []);
 
   return (
 
@@ -35,19 +39,19 @@ export default function LeadsPage(){
 
       <div className="flex gap-4 overflow-x-auto p-4">
 
-        {stages.map(stage=>{
+        {stages.map(stage => {
 
-          const stageLeads = leads.filter(
+          const stageLeads = (leads || []).filter(
             lead => lead.status === stage
           );
 
-          return(
+          return (
             <PipelineColumn
               key={stage}
               title={stage}
               leads={stageLeads}
             />
-          )
+          );
 
         })}
 
