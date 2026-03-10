@@ -33,15 +33,19 @@ export default function LeadsPage() {
 
   return (
 
-    <div>
+    <div className="p-6">
+
+      <h1 className="text-2xl font-bold text-gray-700 mb-4">
+        Lead Pipeline
+      </h1>
 
       <LeadForm refresh={loadLeads} />
 
-      <div className="flex gap-4 overflow-x-auto p-4">
+      <div className="flex gap-6 overflow-x-auto mt-6 pb-4">
 
         {stages.map(stage => {
 
-          const stageLeads = (leads || []).filter(
+          const stageLeads = leads.filter(
             lead => lead.status === stage
           );
 
