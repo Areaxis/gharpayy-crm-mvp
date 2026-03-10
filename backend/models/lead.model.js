@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
 const LeadSchema = new mongoose.Schema({
+
+  // Core lead info
   name: {
     type: String,
     required: true
@@ -16,6 +18,49 @@ const LeadSchema = new mongoose.Schema({
     default: "Website"
   },
 
+
+  // Qualification fields (from employer example form)
+
+  moveInDate: {
+    type: Date
+  },
+
+  location: {
+    type: String
+  },
+
+  inBlr: {
+    type: String,
+    enum: ["Yes", "No"]
+  },
+
+  gender: {
+    type: String,
+    enum: ["Boys", "Girls", "Coliving"]
+  },
+
+  occupation: {
+    type: String,
+    enum: ["Student", "Working", "Intern"]
+  },
+
+  month: {
+    type: String
+  },
+
+  score: {
+    type: Number,
+    min: 1,
+    max: 10
+  },
+
+  owner: {
+    type: String
+  },
+
+
+  // CRM pipeline fields
+
   status: {
     type: String,
     default: "New Lead"
@@ -25,6 +70,9 @@ const LeadSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Agent"
   },
+
+
+  // Activity tracking
 
   lastActivity: {
     type: Date,
@@ -41,10 +89,14 @@ const LeadSchema = new mongoose.Schema({
     }
   ],
 
+
+  // Metadata
+
   createdAt: {
     type: Date,
     default: Date.now
   }
+
 });
 
 export default mongoose.model("Lead", LeadSchema);
