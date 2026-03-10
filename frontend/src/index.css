@@ -11,3 +11,68 @@ body {
 .input {
   @apply border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none;
 }
+
+/* Calendar container */
+
+.react-calendar {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+}
+
+/* Navigation (month + arrows) */
+
+.react-calendar__navigation {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.react-calendar__navigation button {
+  min-width: 36px;
+  background: none;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.react-calendar__navigation button:hover {
+  background: #f3f4f6;
+}
+
+/* Weekdays */
+
+.react-calendar__month-view__weekdays {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Days */
+
+.react-calendar__tile {
+  border-radius: 8px;
+  padding: 10px 0;
+  font-weight: 500;
+}
+
+.react-calendar__tile:hover {
+  background: #f3f4f6;
+}
+
+/* Selected day */
+
+.react-calendar__tile--active {
+  background: #2563eb;
+  color: white;
+}
+
+/* Today */
+
+.react-calendar__tile--now {
+  background: #e0e7ff;
+}
+
+/* Remove weird borders */
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #d1d5db;
+}

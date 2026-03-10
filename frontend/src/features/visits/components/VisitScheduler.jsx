@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+
 import { api } from "../../../config/api";
 
 import HomeIcon from "@mui/icons-material/Home";
@@ -16,25 +19,33 @@ export default function VisitScheduler() {
   );
 
   const [property, setProperty] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState("");
   const [outcome, setOutcome] = useState("");
 
   const scheduleVisit = async () => {
 
     try {
 
+      const visitDate = new Date(date);
+
+      if (time) {
+        const [hours, minutes] = time.split(":");
+        visitDate.setHours(hours);
+        visitDate.setMinutes(minutes);
+      }
+
       await api.post("/visits", {
         leadId,
         property,
-        date,
+        date: visitDate,
         outcome
       });
 
       alert("Visit scheduled");
 
-      setLeadId("");
       setProperty("");
-      setDate("");
+      setTime("");
       setOutcome("");
 
     } catch (err) {
@@ -47,14 +58,14 @@ export default function VisitScheduler() {
   };
 
   const formattedDate = date
-    ? new Date(date).toLocaleString()
+    ? new Date(date).toLocaleDateString()
     : "No date selected";
 
   return (
 
     <div className="p-8 flex justify-center">
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-5xl w-full">
+      <div className="grid md:grid-cols-2 gap-8 max-w-5xl w-full items-start">
 
         {/* LEFT: PROPERTY PREVIEW */}
 
@@ -127,10 +138,19 @@ export default function VisitScheduler() {
             className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
           />
 
+          {/* Inline Calendar */}
+          <div className="w-full rounded-lg border border-gray-200 p-4 bg-gray-50 flex justify-center">
+            <Calendar
+              onChange={setDate}
+              value={date}
+            />
+          </div>
+
+          {/* Time selector */}
           <input
-            type="datetime-local"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
             className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
           />
 
