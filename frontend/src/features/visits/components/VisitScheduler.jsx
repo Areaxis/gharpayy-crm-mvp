@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { api } from "../../../config/api";
 
 import HomeIcon from "@mui/icons-material/Home";
@@ -8,7 +9,12 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 export default function VisitScheduler() {
 
-  const [leadId, setLeadId] = useState("");
+  const [searchParams] = useSearchParams();
+
+  const [leadId, setLeadId] = useState(
+    searchParams.get("leadId") || ""
+  );
+
   const [property, setProperty] = useState("");
   const [date, setDate] = useState("");
   const [outcome, setOutcome] = useState("");
