@@ -22,7 +22,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-2">
 
-            <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-white text-blue-600 font-bold shadow-sm">
+            <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-white text-blue-600 text-lg font-bold tracking-wide shadow-sm logo-font">
               G
             </div>
 
