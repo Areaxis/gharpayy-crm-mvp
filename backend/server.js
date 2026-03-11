@@ -21,7 +21,3 @@ app.use("/api/leads", leadRoutes);
 app.use("/api/visits", visitRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/agents", agentRoutes);
-
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
-});
